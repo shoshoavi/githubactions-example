@@ -6,8 +6,14 @@ jobs:
   first_job:
     runs-on: ubuntu-latest
     steps:
+    - name: checkout repo
+      uses: actions/checkout@v4
+
     - name: wecloming message
       run: echo "this is welcomig message for your first run on github actions"
 
     - name: list files
       run: ls -lah
+    
+    - name: show content of readme file
+      run: cat README.md
