@@ -5,7 +5,7 @@ on: push
 jobs:
   first_job:
     runs-on: ubuntu-latest
-    step:
+    steps:
     - name: wecloming message
       run: echo "this is welcomig message for your first run on github actions"
 
