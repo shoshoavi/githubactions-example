@@ -1,19 +1,46 @@
-name: making tests to learn github actions
+name: Generate ASCII dragon art
 
 on: push
 
 jobs:
-  first_job:
+  Build_job_1:
     runs-on: ubuntu-latest
     steps:
-    - name: checkout repo
-      uses: actions/checkout@v4
+    - name: install cowsay for generating ascii
+      run: sudo apt install cowsay -y
 
-    - name: wecloming message
-      run: echo "this is welcomig message for your first run on github actions"
+    - name: execute cosay command
+      run: cowsay -f dragon "I'm Shanron you have 1 wish to fullfil!! ask now!" >> dragon.txt
 
-    - name: list files
-      run: ls -lah
+    - name: upload dragon artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: dragon-artifact-txt
+        path: dragon.txt
     
-    - name: show content of readme file
-      run: cat README.md
+    - name: sleep for 10
+      run: sleep 10
+
+  Test_job_2:
+    needs: Build_job_1
+    runs-on: ubuntu-latest
+    steps:
+    - name: download dragon artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: dragon-artifact-txt
+    
+    - name: test dragon artifact file exist
+      run: grep -i 'Shanron' dragon.txt
+
+  Deploy_job_3:
+    needs: Test_job_2
+    runs-on: ubuntu-latest
+    steps:
+    - name: download dragon artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: dragon-artifact-txt
+    
+    - name: read file
+      run: cat dragon.txt
